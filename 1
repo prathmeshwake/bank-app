@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  backend:
+    image: python:3.10-slim
+    working_dir: /app
+    volumes:
+      - ./backend:/app
+    command: sh -c "pip install --no-cache-dir -r requirements.txt && python app.py"
+    expose:
+      - "5000"
+
+  frontend:
+    image: nginx:alpine
+    depends_on:
+    - backend
+    volumes:
+    - ./frontend:/usr/share/nginx/html:ro
+    - ./frontend:/etc/nginx/conf.d:ro
+    ports:
+    - "80:80"
+
